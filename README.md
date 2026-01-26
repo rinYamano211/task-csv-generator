@@ -1,2 +1,3 @@
-# task-csv-generator
-Web application to generate CSV files for task management
+# CSV Task Generator
+
+業務で発生していたCSV作成作業を簡略化するためのWebアプリです。
