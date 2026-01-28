@@ -9,6 +9,55 @@
     <h1>CSV Task Generater</h1>
     <p>タスク登録用CSVを簡単に作成するWebアプリ</p>
     <p>JIRAに登録するためのCSVファイルを簡単に作成できます。</p>
+
+    <from id="taskform">
+      <fieldset>
+        <legend>対象プロジェクト</legend>
+
+        <label>
+          <input type="checkbox" name="project" value="projectA">
+          プロジェクトA
+        </label><br>
+
+        <label>
+          <input type="checkbox" name="project" value="projectB">
+          プロジェクトB
+        </label><br>
+
+        <label>
+          <input type="checkbox" name="project" value="projectC">
+          プロジェクトC
+        </label>
+      </fieldset>
+
+      <br>
+
+      <fieldset>
+        <legend>タスク種別</legend>
+
+        <label>
+          <input type="checkbox" name="taskType" value="design">
+          設計
+        </label><br>
+
+        <label>
+          <input type="checkbox" name="taskType" value="implementation">
+          実装
+        </label><br>
+
+        <label>
+          <input type="checkbox" name="taskType" value="test">
+          テスト
+        </label>
+      </fieldset>
+
+      <br>
+
+      <button type="button" id="generateBtn">
+        CSVを生成
+      </button>
+    </from>
+    
     <script src="main.js"></script>
   </body>
 </html>

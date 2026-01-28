@@ -10,3 +10,22 @@ h1 {
 p {
   color: #666;
 }
+
+fieldset {
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+legend {
+  font-weight: bold;
+}
+
+label {
+  display: block;
+  margin: 5px 0;
+}
+
+button {
+  padding: 8px 16px;
+  font-size: 14px;
+}
