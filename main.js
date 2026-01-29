@@ -38,7 +38,7 @@ const taskGroups = document.querySelectorAll(".task-group");
 taskGroups.forEach((group) => {
     const addButton = group.querySelector(".add-part-btn");
     const input = group.querySelector("input");
-    const partsList = group.querySelector("parts-list");
+    const partsList = group.querySelector(".parts-list");
     const taskKey = group.dataset.task;
 
     addButton.addEventListener("click", () => {
@@ -52,7 +52,14 @@ taskGroups.forEach((group) => {
         input.value = "";
 
         // 再描画
-        renderParts(partsList, task[taskKey]);
+        renderParts(partsList, tasks[taskKey]);
+    });
+
+    input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            addButton.click();
+        }
     });
 });
 
