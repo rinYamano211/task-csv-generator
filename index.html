@@ -10,25 +10,25 @@
     <p>タスク登録用CSVを簡単に作成するWebアプリ</p>
     <p>JIRAに登録するためのCSVファイルを簡単に作成できます。</p>
 
-    <from id="taskform">
+    <form id="taskform">
       <h2>工程別 部品登録</h2>
 
-      <div class="task-group" data-task="design">
+      <div class="task-group" data-task-key="design">
         <h3>設計</h3>
         <input type="text" placeholder="部品名">
         <button type="button" class="add-part-btn">+</button>
         <ul class="parts-list"></ul>
       </div>
 
-      <div class="task-group" data-task="implementation">
+      <div class="task-group" data-task-key="implementation">
         <h3>実装</h3>
         <input type="text" placeholder="部品名">
         <button type="button" class="add-part-btn">+</button>
         <ul class="parts-list"></ul>
       </div>
 
-      <div class="task-group" data-task="test">
-        <h3>設計</h3>
+      <div class="task-group" data-task-key="test">
+        <h3>テスト</h3>
         <input type="text" placeholder="部品名">
         <button type="button" class="add-part-btn">+</button>
         <ul class="parts-list"></ul>
@@ -79,7 +79,7 @@
       <button type="button" id="generateBtn">
         CSVを生成
       </button>
-    </from>
+    </form>
     
     <script src="main.js"></script>
   </body>
