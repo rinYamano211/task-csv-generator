@@ -10,29 +10,9 @@ const generateBtn = document.getElementById("generateBtn");
 //ボタンクリック時処理
 generateBtn.addEventListener("click", () => {
     const csvRows = buildCsvRows();
-    console.log(csvRows);
-//    //プロジェクトのチェックボックスをすべて取得
-//    const projectCheckboxes = document.querySelectorAll(
-//        'input[name="project"]:checked'
-//    );
-//
-//    //タスク種別のチェックボックスをすべて取得
-//    const taskTypeCheckboxes = document.querySelectorAll(
-//        'input[name="taskType"]:checked'
-//    );
-//
-//    //取得した値を配列に変換
-//    const selectedProjects = Array.from(projectCheckboxes).map(
-//        (checkbox) => checkbox.value
-//    );
-//
-//    const selectedTaskTypes = Array.from(taskTypeCheckboxes).map(
-//        (checkbox) => checkbox.value
-//    );
-//
-//    //確認用
-//    console.log("projects:", selectedProjects);
-//    console.log("Task Types:", selectedTaskTypes);
+    const csvText = convertToCSV(csvRows);
+
+    downloadCsv(csvText, "jira_tasks.csv")
 });
 
 const taskGroups = document.querySelectorAll(".task-group");
@@ -55,6 +35,8 @@ taskGroups.forEach((group) => {
 
         // 再描画
         renderParts(partsList, tasks[taskKey]);
+
+        saveTasks();
     });
 
     input.addEventListener("keydown", (event) => {
@@ -114,3 +96,65 @@ function buildCsvRows() {
 
     return rows;
 };
+
+function convertToCSV(rows) {
+    return rows
+        .map(row =>
+            row.map(value => `"${value}`).join(",")
+        )
+        .join("\n")
+}
+
+function downloadCsv(text, filename) {
+    const blob = new Blob([text], { type: "text/csv;charset=utf-8;" });
+    const url =URL.createObjectURL(blob);
+
+    const a =document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
+const clearBtn = document.getElementById("clearBtn");
+
+clearBtn.addEventListener("click", () => {
+    //データ初期化
+    Object.keys(tasks).forEach(key => {
+        tasks[key] = [];
+    });
+
+    //表示クリア
+    document.querySelectorAll(".parts-list").forEach(list => {
+        list.innerHTML = "";
+    });
+
+    localStorage.removeItem("tasks");
+});
+
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function loadTasks() {
+    const saved = localStorage.getItem("tasks");
+    if (!saved) return;
+
+    const parsedTasks = JSON.parse(saved);
+
+    //tasks に復元
+    Object.keys(tasks).forEach(key => {
+        tasks[key] = parsedTasks[key] || [];
+    });
+
+    //画面に反映
+    document.querySelectorAll(".task-group").forEach(group => {
+        const taskKey = group.dataset.taskKey;
+        const partsList = group.querySelector(".parts-list");
+        renderParts(partsList, tasks[taskKey]);
+    });
+}
+
+//ページ読み込み時に復元
+loadTasks();
