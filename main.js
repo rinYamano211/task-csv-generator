@@ -99,10 +99,77 @@ function renderAllTasks() {
 function renderParts(listElement, parts) {
     listElement.innerHTML = "";
 
-    parts.forEach((part) => {
+    parts.forEach((part, index) => {
         const li = document.createElement("li");
         li.textContent = part;
+
+        // ===== D&D用 =====
+        li.draggable = true;
+        li.dataset.index = index;
+
+        li.addEventListener("dragstart", handleDragStart);
+        li.addEventListener("dragend", handleDragEnd);
+        li.addEventListener("dragover", handleDragOver);
+        li.addEventListener("drop", handleDrop);
+
+        // ===== 削除ボタン =====
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "×";
+        deleteBtn.className = "delete-btn";
+
+        deleteBtn.addEventListener("click", () => {
+            const group = listElement.closest(".task-group");
+            const taskKey = group.dataset.taskKey;
+
+            tasks[taskKey].splice(index, 1);
+            saveTasks();
+            renderAllTasks();
+        });
+
+        li.appendChild(deleteBtn);
         listElement.appendChild(li);
+    });
+}
+
+let dragFromIndex = null;
+
+function handleDragStart(event) {
+    dragFromIndex = Number(event.target.dataset.index);
+    event.target.classList.add("dragging");
+}
+
+function handleDragOver(event) {
+    event.preventDefault();
+
+    document.querySelectorAll(".drag-over").forEach(el => {
+        el.classList.remove("drag-over");
+    });
+
+    event.target.classList.add("drag-over");
+}
+
+function handleDrop(event) {
+    event.preventDefault();
+
+    const dragToIndex = Number(event.target.dataset.index);
+    if (dragFromIndex === null || dragFromIndex === dragToIndex) return;
+
+    const group = event.target.closest(".task-group");
+    const taskKey = group.dataset.taskKey;
+
+    moveItem(tasks[taskKey], dragFromIndex, dragToIndex);
+
+    saveTasks();
+    renderAllTasks();
+
+    dragFromIndex = null;
+}
+
+function handleDragEnd(event) {
+    event.target.classList.remove("dragging");
+
+    document.querySelectorAll(".drag-over").forEach(el => {
+        el.classList.remove("drag-over");
     });
 }
 
@@ -182,4 +249,12 @@ function loadTasks() {
     });
 
     renderAllTasks();
+}
+
+/**
+ * 配列内の要素を移動する
+ */
+function moveItem (array, fromIndex, toIndex) {
+    const item = array.splice(fromIndex, 1)[0];
+    array.splice(toIndex, 0, item);
 }
