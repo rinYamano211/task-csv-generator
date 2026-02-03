@@ -1,90 +1,85 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8">
-    <title>CSV Task Generater</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <h1>CSV Task Generater</h1>
-    <p>タスク登録用CSVを簡単に作成するWebアプリ</p>
-    <p>JIRAに登録するためのCSVファイルを簡単に作成できます。</p>
+<head>
+  <meta charset="UTF-8">
+  <title>CSV Task Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
 
-    <form id="taskform">
-      <h2>工程別 部品登録</h2>
+    <header>
+      <h1>CSV Task Generator</h1>
+      <p>タスク登録用CSVを簡単に作成するWebアプリ</p>
+      <p>JIRAに登録するためのCSVファイルを簡単に作成できます。</p>
+    </header>
 
-      <div class="task-group" data-task-key="design">
-        <h3>設計</h3>
-        <input type="text" placeholder="部品名">
-        <button type="button" class="add-part-btn">+</button>
-        <ul class="parts-list"></ul>
+    <section class="usage">
+      <h2>使い方</h2>
+      <ol>
+        <li>工程ごとにタスクを追加</li>
+        <li>ドラッグで順序を調整</li>
+        <li>CSVを生成してJIRAにインポート</li>
+      </ol>
+    </section>
+
+    <div class="task-form">
+
+      <section class="task-section">
+        <h2>工程別 部品登録</h2>
+
+        <div class="task-group" data-task-key="design">
+          <h3>設計</h3>
+          <div class="task-input">
+            <input type="text" placeholder="部品名">
+            <button type="button" class="add-part-btn">+</button>
+          </div>
+          <ul class="parts-list"></ul>
+        </div>
+
+        <div class="task-group" data-task-key="implementation">
+          <h3>実装</h3>
+          <div class="task-input">
+            <input type="text" placeholder="部品名">
+            <button type="button" class="add-part-btn">+</button>
+          </div>
+          <ul class="parts-list"></ul>
+        </div>
+
+        <div class="task-group" data-task-key="test">
+          <h3>テスト</h3>
+          <div class="task-input">
+            <input type="text" placeholder="部品名">
+            <button type="button" class="add-part-btn">+</button>
+          </div>
+          <ul class="parts-list"></ul>
+        </div>
+      </section>
+
+      <section class="option-section">
+        <fieldset>
+          <legend>対象プロジェクト</legend>
+          <label><input type="checkbox" name="project" value="projectA"> プロジェクトA</label>
+          <label><input type="checkbox" name="project" value="projectB"> プロジェクトB</label>
+          <label><input type="checkbox" name="project" value="projectC"> プロジェクトC</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>タスク種別</legend>
+          <label><input type="checkbox" name="taskType" value="design"> 設計</label>
+          <label><input type="checkbox" name="taskType" value="implementation"> 実装</label>
+          <label><input type="checkbox" name="taskType" value="test"> テスト</label>
+        </fieldset>
+      </section>
+
+      <div class="actions">
+        <button type="button" id="generateBtn">CSVを生成</button>
+        <button type="button" id="clearBtn">クリア</button>
       </div>
 
-      <div class="task-group" data-task-key="implementation">
-        <h3>実装</h3>
-        <input type="text" placeholder="部品名">
-        <button type="button" class="add-part-btn">+</button>
-        <ul class="parts-list"></ul>
-      </div>
+    </div>
 
-      <div class="task-group" data-task-key="test">
-        <h3>テスト</h3>
-        <input type="text" placeholder="部品名">
-        <button type="button" class="add-part-btn">+</button>
-        <ul class="parts-list"></ul>
-      </div>
-
-      <fieldset>
-        <legend>対象プロジェクト</legend>
-
-        <label>
-          <input type="checkbox" name="project" value="projectA">
-          プロジェクトA
-        </label><br>
-
-        <label>
-          <input type="checkbox" name="project" value="projectB">
-          プロジェクトB
-        </label><br>
-
-        <label>
-          <input type="checkbox" name="project" value="projectC">
-          プロジェクトC
-        </label>
-      </fieldset>
-
-      <br>
-
-      <fieldset>
-        <legend>タスク種別</legend>
-
-        <label>
-          <input type="checkbox" name="taskType" value="design">
-          設計
-        </label><br>
-
-        <label>
-          <input type="checkbox" name="taskType" value="implementation">
-          実装
-        </label><br>
-
-        <label>
-          <input type="checkbox" name="taskType" value="test">
-          テスト
-        </label>
-      </fieldset>
-
-      <br>
-
-      <button type="button" id="generateBtn">
-        CSVを生成
-      </button>
-      <button type="button" id="clearBtn">
-        クリア
-      </button>
-    </form>
-    
     <script src="main.js"></script>
-  </body>
+  </div>
+</body>
 </html>
-
