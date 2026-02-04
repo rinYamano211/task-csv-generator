@@ -1,10 +1,22 @@
+// ===== メタ情報（全タスク共通） =====
+const meta = {
+    epicLink: ""
+};
+
+// ===== UIに表示しない共通タスク =====
+const hiddenTasks = {
+    design: ["設計レビュー"],
+    implementation: ["性的解析", "コードレビュー"],
+    rest: ["結合テスト準備"]
+};
+
 // ===== 定数定義 =====
 
 const STORAGE_KEY = "tasks";
 const TASK_STATUS = "未着手";
 const CSV_FILENAME = "jira_tasks.csv";
 
-const CSV_HEADER = ["要約", "課題タイプ", "進捗"];
+const CSV_HEADER = ["要約", "課題タイプ", "進捗", "エピックリンク"];
 
 const ISSUE_TYPE = {
     STORY: "ストーリー",
@@ -27,6 +39,7 @@ const taskGroups = document.querySelectorAll(".task-group");
 
 // ===== 初期化 =====
 loadTasks();
+loadMeta();
 taskGroups.forEach(initTaskGroup);
 
 
@@ -196,16 +209,22 @@ function buildCsvRows() {
         if (!story.enabled) return;
 
         //ストーリー行
-        rows.push([story.label, ISSUE_TYPE.STORY, ""]);
+        rows.push([story.label, 
+            ISSUE_TYPE.STORY, 
+            "", 
+        meta.epicLink
+    ]);
 
         //配下のタスク
-        const taskList = tasks[story.name] || [];
+        const visibleTasks = tasks[story.name] || [];
+        const invisibleTasks = hiddenTasks[story.name] || [];
 
-        taskList.forEach(taskName => {
+        [...invisibleTasks, ...visibleTasks].forEach(taskName => {
             rows.push([
                 taskName,
                 ISSUE_TYPE.TASK,
-                TASK_STATUS
+                TASK_STATUS, 
+                meta.epicLink
             ]);
         });
     });
@@ -257,4 +276,14 @@ function loadTasks() {
 function moveItem (array, fromIndex, toIndex) {
     const item = array.splice(fromIndex, 1)[0];
     array.splice(toIndex, 0, item);
+}
+
+function saveMeta() {
+    localStorage.setItem("meta", JSON.stringify(meta));
+}
+
+function loadMeta() {
+    const saved = localStorage.getItem("meta");
+    if (!saved) return;
+    Object.assign(meta, JSON.parse(saved));
 }
