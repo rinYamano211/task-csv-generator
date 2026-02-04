@@ -6,8 +6,8 @@ const meta = {
 // ===== UIに表示しない共通タスク =====
 const hiddenTasks = {
     design: ["設計レビュー"],
-    implementation: ["性的解析", "コードレビュー"],
-    rest: ["結合テスト準備"]
+    implementation: ["静的解析", "コードレビュー"],
+    test: ["結合テスト準備"]
 };
 
 // ===== 定数定義 =====
@@ -35,7 +35,7 @@ const tasks = {
 const generateBtn = document.getElementById("generateBtn");
 const clearBtn = document.getElementById("clearBtn");
 const taskGroups = document.querySelectorAll(".task-group");
-
+const epicInput = document.getElementById("epicLink");
 
 // ===== 初期化 =====
 loadTasks();
@@ -52,22 +52,27 @@ generateBtn.addEventListener("click", () => {
 });
 
 clearBtn.addEventListener("click", () => {
-    //データ初期化
     Object.keys(tasks).forEach(key => {
         tasks[key] = [];
     });
 
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem("meta");
+    meta.epicLink = "";
+    epicInput.value = "";
     renderAllTasks();
 });
 
+epicInput.addEventListener("input", () => {
+    meta.epicLink = epicInput.value.trim();
+    saveMeta();
+});
 
 /**
  * 各工程（task-group）のイベントを初期化する
  */
 function initTaskGroup(group) {
     const addButton = group.querySelector(".add-part-btn");
-    const input = group.querySelector("input");
+    const input = group.querySelector(".task-input input[type='text']");
     const partsList = group.querySelector(".parts-list");
     const taskKey = group.dataset.taskKey;
 
@@ -153,12 +158,14 @@ function handleDragStart(event) {
 
 function handleDragOver(event) {
     event.preventDefault();
+    const li = event.target.closest("li");
+    if(!li) return;
 
     document.querySelectorAll(".drag-over").forEach(el => {
         el.classList.remove("drag-over");
     });
 
-    event.target.classList.add("drag-over");
+    li.classList.add("drag-over");
 }
 
 function handleDrop(event) {
@@ -187,15 +194,15 @@ function handleDragEnd(event) {
 }
 
 function getStories() {
-    const storyCheckboxes = document.querySelectorAll(
-        'input[name="taskType"]'
-    );
+    return Array.from(document.querySelectorAll(".task-group")).map(group => {
+        const checkbox = group.querySelector(".story-toggle input");
 
-    return Array.from(storyCheckboxes).map(cb => ({
-        name: cb.value,
-        label: cb.parentElement.textContent.trim(),
-        enabled: cb.checked
-    }));
+        return {
+            name: group.dataset.taskKey,
+            label: group.querySelector("h3").textContent,
+            enabled: checkbox ? checkbox.checked : true
+        };
+    });
 }
 
 function buildCsvRows() {
@@ -237,7 +244,7 @@ function convertToCSV(rows) {
         .map(row =>
             row.map(value => `"${value}"`).join(",")
         )
-        .join("\n")
+        .join("\r\n")
 }
 
 function downloadCsv(text, filename) {
@@ -285,5 +292,7 @@ function saveMeta() {
 function loadMeta() {
     const saved = localStorage.getItem("meta");
     if (!saved) return;
+
     Object.assign(meta, JSON.parse(saved));
+    epicInput.value = meta.epicLink;
 }

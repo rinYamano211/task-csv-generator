@@ -23,31 +23,63 @@
       </ol>
     </section>
 
+    <section class="meta-section">
+      <label for="epicLink">エピックリンク</label>
+      <input 
+        type="text"
+        id="epicLink"
+        placeholder="例: PROJ-123"
+      >
+    </section>
+
     <div class="task-form">
 
       <section class="task-section">
         <h2>工程別 部品登録</h2>
 
         <div class="task-group" data-task-key="design">
-          <h3>設計</h3>
+          <div class="task-header">
+            <h3>設計</h3>
+            <label class="story-toggle">
+              <input type="checkbox" checked>
+              ストーリーとして出力
+            </label>
+          </div>
+
           <div class="task-input">
             <input type="text" placeholder="部品名">
             <button type="button" class="add-part-btn">+</button>
           </div>
+
           <ul class="parts-list"></ul>
         </div>
 
         <div class="task-group" data-task-key="implementation">
-          <h3>実装</h3>
+          <div class="task-header">
+            <h3>実装</h3>
+            <label class="story-toggle">
+              <input type="checkbox" checked>
+              ストーリーとして出力
+            </label>
+          </div>
+
           <div class="task-input">
             <input type="text" placeholder="部品名">
             <button type="button" class="add-part-btn">+</button>
           </div>
+
           <ul class="parts-list"></ul>
         </div>
 
         <div class="task-group" data-task-key="test">
-          <h3>テスト</h3>
+          <div class="task-header">
+            <h3>テスト</h3>
+            <label class="story-toggle">
+              <input type="checkbox" checked>
+              ストーリーとして出力
+            </label>
+          </div>
+
           <div class="task-input">
             <input type="text" placeholder="部品名">
             <button type="button" class="add-part-btn">+</button>
@@ -62,13 +94,6 @@
           <label><input type="checkbox" name="project" value="projectA"> プロジェクトA</label>
           <label><input type="checkbox" name="project" value="projectB"> プロジェクトB</label>
           <label><input type="checkbox" name="project" value="projectC"> プロジェクトC</label>
-        </fieldset>
-
-        <fieldset>
-          <legend>タスク種別</legend>
-          <label><input type="checkbox" name="taskType" value="design"> 設計</label>
-          <label><input type="checkbox" name="taskType" value="implementation"> 実装</label>
-          <label><input type="checkbox" name="taskType" value="test"> テスト</label>
         </fieldset>
       </section>
 

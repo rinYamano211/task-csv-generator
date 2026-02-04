@@ -35,6 +35,16 @@ section {
   border-radius: 6px;
 }
 
+/* ===== Meta Section ===== */
+.meta-section {
+  margin-bottom: 24px;
+}
+
+.meta-section input {
+  width: 300px;
+  padding: 6px 8px;
+}
+
 /* ===== Task Section ===== */
 .task-section {
   background-color: #fafafa;
@@ -64,6 +74,17 @@ section {
 .task-input input {
   flex: 1;
   padding: 6px 8px;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.story-toggle {
+  font-size: 12px;
+  color: #555;
 }
 
 /* ===== Parts List ===== */
